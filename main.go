@@ -6,6 +6,7 @@ import (
 	"os"
 
 	"github.com/gorilla/mux"
+	"github.com/tspeedb/VenueDesignWizard/handlers"
 )
 
 func main() {
@@ -22,16 +23,17 @@ func main() {
 	r := mux.NewRouter()
 
 	// Define routes
-	r.HandleFunc("/", HomePage).Methods("GET")
+	r.HandleFunc("/", handlers.HomePage).Methods("GET")
 	r.HandleFunc("/upload", func(w http.ResponseWriter, r *http.Request) {
-		UploadFileHandler(w, r, storagePath)
+		handlers.UploadFileHandler(w, r, storagePath)
 	}).Methods("POST")
 	r.HandleFunc("/download/{fileName}", func(w http.ResponseWriter, r *http.Request) {
-		DownloadFileHandler(w, r, storagePath)
+		handlers.DownloadFileHandler(w, r, storagePath)
 	}).Methods("GET")
 
 	// Start the server
 	port := "8080"
 	log.Printf("Server running on http://localhost:%s", port)
 	log.Fatal(http.ListenAndServe(":"+port, r))
+
 }
